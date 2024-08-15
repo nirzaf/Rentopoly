@@ -7,20 +7,15 @@ using Rentopoly.Data;
 
 namespace Rentopoly.Rentals;
 
-public partial class AddRentalViewModel : ObservableObject
+public partial class AddRentalViewModel(BoardGameContext dbContext, ISnackbarMessageQueue messageQueue)
+    : ObservableObject
 {
-    private BoardGameContext DbContext { get; }
-    public ISnackbarMessageQueue MessageQueue { get; }
+    private BoardGameContext DbContext { get; } = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
+    public ISnackbarMessageQueue MessageQueue { get; } = messageQueue ?? throw new ArgumentNullException(nameof(messageQueue));
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(SubmitCommand))]
     private string? _loanedTo;
-
-    public AddRentalViewModel(BoardGameContext dbContext, ISnackbarMessageQueue messageQueue)
-    {
-        DbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
-        MessageQueue = messageQueue ?? throw new ArgumentNullException(nameof(messageQueue));
-    }
 
     [RelayCommand(CanExecute = nameof(CanSubmit))]
     private async Task OnSubmit()

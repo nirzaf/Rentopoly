@@ -5,24 +5,14 @@ using Rentopoly.Data;
 
 namespace Rentopoly.Rentals;
 
-public partial class RentalItemViewModel
+public partial class RentalItemViewModel(Rental rental, BoardGameContext boardGameContext, IMessenger messenger)
 {
-    private int RentalId { get; }
-    public string LoanedTo { get; }
-    public DateTime LoanedOn { get; }
-    public DateTime? ReturnedOn { get; }
-    private BoardGameContext BoardGameContext { get; }
-    private IMessenger Messenger { get; }
-
-    public RentalItemViewModel(Rental rental, BoardGameContext boardGameContext, IMessenger messenger)
-    {
-        RentalId = rental.Id;
-        LoanedTo = rental.LoanedTo;
-        LoanedOn = rental.LoanedOn;
-        ReturnedOn = rental.ReturnedOn;
-        BoardGameContext = boardGameContext;
-        Messenger = messenger;
-    }
+    private int RentalId { get; } = rental.Id;
+    public string LoanedTo { get; } = rental.LoanedTo;
+    public DateTime LoanedOn { get; } = rental.LoanedOn;
+    public DateTime? ReturnedOn { get; } = rental.ReturnedOn;
+    private BoardGameContext BoardGameContext { get; } = boardGameContext;
+    private IMessenger Messenger { get; } = messenger;
 
     [RelayCommand]
     public async Task OnReturned()

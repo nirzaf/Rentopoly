@@ -32,7 +32,7 @@ public partial class ViewRentalsViewModel : ObservableObject, IRecipient<RentalU
     private async Task OnRefresh()
     {
         CancellationTokenSource cts = new();
-        Interlocked.Exchange(ref _refreshCancellation, cts)?.Cancel();
+        await Interlocked.Exchange(ref _refreshCancellation, cts)?.CancelAsync()!;
         try
         {
             Rentals.Clear();
